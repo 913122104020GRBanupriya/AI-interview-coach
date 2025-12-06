@@ -1,0 +1,12 @@
+iwant to develop flask code.
+1) login (Candidate Name, Password), register(Candidate Name, Password, Confirm password, Email ID, Phone Number)
+store ins sqlite3 db.
+
+2) Once after login, new page will open and automatically cpature video using webcam. then click button to generate random questions one by one.
+
+3) user should enter then answer using voice.
+4) then convert voice into text.
+5) Predict Confidence level (high, moderate, poor).
+6) Feedback system.
+
+include some graphs in feed back.

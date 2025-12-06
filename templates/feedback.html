@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confidence Feedback - Interview Practice</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #805ad5;
+            --secondary-color: #38b2ac;
+            --accent-color: #ed8936;
+            --success-color: #48bb78;
+            --warning-color: #d69e2e;
+            --danger-color: #f56565;
+            --dark-color: #2d3748;
+            --light-color: #f7fafc;
+            --gray-100: #f7fafc;
+            --gray-200: #edf2f7;
+            --gray-300: #e2e8f0;
+            --gray-400: #cbd5e0;
+            --gray-500: #a0aec0;
+            --gray-600: #718096;
+            --gray-700: #4a5568;
+            --gray-800: #2d3748;
+            --gray-900: #1a202c;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--gray-100);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .page-subtitle {
+            color: var(--gray-600);
+            margin-top: 0.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Cards */
+        .card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: var(--transition);
+            margin-bottom: 2rem;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #6b46c1;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background-color: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--gray-300);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #38a169;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media (max-width: 968px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Feedback Chart */
+        .chart-container {
+            position: relative;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--gray-100);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .chart-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .chart-overlay {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            box-shadow: var(--shadow-md);
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        /* Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border-top: 4px solid;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .metric-card.confidence {
+            border-top-color: var(--primary-color);
+        }
+
+        .metric-card.clarity {
+            border-top-color: var(--secondary-color);
+        }
+
+        .metric-card.pace {
+            border-top-color: var(--accent-color);
+        }
+
+        .metric-card.engagement {
+            border-top-color: var(--success-color);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .metric-title {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .metric-icon.confidence {
+            background-color: var(--primary-color);
+        }
+
+        .metric-icon.clarity {
+            background-color: var(--secondary-color);
+        }
+
+        .metric-icon.pace {
+            background-color: var(--accent-color);
+        }
+
+        .metric-icon.engagement {
+            background-color: var(--success-color);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-change {
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .metric-change.positive {
+            color: var(--success-color);
+        }
+
+        .metric-change.negative {
+            color: var(--danger-color);
+        }
+
+        .metric-change.neutral {
+            color: var(--gray-500);
+        }
+
+        /* Progress Bars */
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-title {
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .progress-value {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+        }
+
+        .progress-fill.high {
+            background-color: var(--success-color);
+        }
+
+        .progress-fill.medium {
+            background-color: var(--warning-color);
+        }
+
+        .progress-fill.low {
+            background-color: var(--danger-color);
+        }
+
+        /* Recommendations */
+        .recommendation-list {
+            list-style: none;
+        }
+
+        .recommendation-item {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--gray-100);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: var(--transition);
+        }
+
+        .recommendation-item:hover {
+            background-color: var(--gray-200);
+            transform: translateX(4px);
+        }
+
+        .recommendation-icon {
+            color: var(--primary-color);
+            margin-top: 0.25rem;
+        }
+
+        .recommendation-content h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--gray-800);
+        }
+
+        .recommendation-content p {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--gray-200);
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab:hover {
+            color: var(--gray-800);
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* History Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--gray-700);
+            background-color: var(--gray-100);
+        }
+
+        tr:hover {
+            background-color: var(--gray-50);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--gray-800);
+            color: var(--gray-300);
+            padding: 1.5rem 0;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .action-buttons {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-500);
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Share Options */
+        .share-options {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .share-option {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .share-option:hover {
+            transform: scale(1.1);
+        }
+
+        .share-option.email {
+            background-color: #ea4335;
+        }
+
+        .share-option.linkedin {
+            background-color: #0077b5;
+        }
+
+        .share-option.twitter {
+            background-color: #1da1f2;
+        }
+
+        .share-option.link {
+            background-color: var(--gray-600);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <h1>Confidence Feedback</h1>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Your Confidence Analysis</h1>
+                <p class="page-subtitle">Detailed breakdown of your interview performance</p>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-outline" onclick="downloadReport()">
+                    <i class="fas fa-download"></i>
+                    Download Report
+                </button>
+                <button class="btn btn-primary" onclick="openShareModal()">
+                    <i class="fas fa-share-alt"></i>
+                    Share
+                </button>
+            </div>
+        </div>
+
+        <!-- Metrics Overview -->
+        <div class="metrics-grid">
+            <div class="metric-card confidence">
+                <div class="metric-header">
+                    <div class="metric-title">Overall Confidence</div>
+                    <div class="metric-icon confidence">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                </div>
+                <div class="metric-value">78%</div>
+                <div class="metric-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>5% from last session</span>
+                </div>
+            </div>
+
+            <div class="metric-card clarity">
+                <div class="metric-header">
+                    <div class="metric-title">Speech Clarity</div>
+                    <div class="metric-icon clarity">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                </div>
+                <div class="metric-value">82%</div>
+                <div class="metric-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>3% from last session</span>
+                </div>
+            </div>
+
+            <div class="metric-card pace">
+                <div class="metric-header">
+                    <div class="metric-title">Speaking Pace</div>
+                    <div class="metric-icon pace">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                </div>
+                <div class="metric-value">75%</div>
+                <div class="metric-change neutral">
+                    <i class="fas fa-minus"></i>
+                    <span>No change from last session</span>
+                </div>
+            </div>
+
+            <div class="metric-card engagement">
+                <div class="metric-header">
+                    <div class="metric-title">Engagement Level</div>
+                    <div class="metric-icon engagement">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                </div>
+                <div class="metric-value">85%</div>
+                <div class="metric-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>8% from last session</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-2">
+            <!-- Feedback Chart -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-area"></i>
+                        Confidence Trend
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <img src="data:image/png;base64,{{ img_data }}" alt="Confidence Feedback Chart">
+                        <div class="chart-overlay">Latest Session</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Analysis -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-analytics"></i>
+                        Detailed Analysis
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <div class="progress-title">Eye Contact</div>
+                            <div class="progress-value">85%</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill high" style="width: 85%"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <div class="progress-title">Voice Modulation</div>
+                            <div class="progress-value">72%</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill medium" style="width: 72%"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <div class="progress-title">Filler Words</div>
+                            <div class="progress-value">65%</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill medium" style="width: 65%"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <div class="progress-title">Posture</div>
+                            <div class="progress-value">90%</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill high" style="width: 90%"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <div class="progress-title">Hand Gestures</div>
+                            <div class="progress-value">78%</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill high" style="width: 78%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations Section -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Personalized Recommendations
+                </h3>
+            </div>
+            <div class="card-body">
+                <ul class="recommendation-list">
+                    <li class="recommendation-item">
+                        <div class="recommendation-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="recommendation-content">
+                            <h4>Reduce Filler Words</h4>
+                            <p>You used "um" and "uh" 12 times during your response. Try pausing briefly instead of using filler words when gathering your thoughts.</p>
+                        </div>
+                    </li>
+                    <li class="recommendation-item">
+                        <div class="recommendation-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="recommendation-content">
+                            <h4>Improve Voice Modulation</h4>
+                            <p>Your pitch remained relatively constant throughout your answer. Practice varying your tone to emphasize key points and maintain listener engagement.</p>
+                        </div>
+                    </li>
+                    <li class="recommendation-item">
+                        <div class="recommendation-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="recommendation-content">
+                            <h4>Structure Your Responses</h4>
+                            <p>Consider using the STAR method (Situation, Task, Action, Result) to organize your answers more effectively.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Historical Performance Tabs -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-history"></i>
+                    Performance History
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab('sessions')">Recent Sessions</div>
+                    <div class="tab" onclick="switchTab('comparison')">Peer Comparison</div>
+                    <div class="tab" onclick="switchTab('goals')">Goals & Progress</div>
+                </div>
+
+                <div id="sessions" class="tab-content active">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Question Type</th>
+                                    <th>Confidence</th>
+                                    <th>Duration</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Oct 15, 2023</td>
+                                    <td>Behavioral</td>
+                                    <td>78%</td>
+                                    <td>2:45</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-secondary">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Oct 12, 2023</td>
+                                    <td>Technical</td>
+                                    <td>73%</td>
+                                    <td>3:12</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-secondary">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Oct 10, 2023</td>
+                                    <td>Situational</td>
+                                    <td>75%</td>
+                                    <td>2:30</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-secondary">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Oct 8, 2023</td>
+                                    <td>Behavioral</td>
+                                    <td>70%</td>
+                                    <td>2:55</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-secondary">View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="comparison" class="tab-content">
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <div class="progress-title">Your Confidence vs. Average</div>
+                            <div class="progress-value">78% vs. 65%</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill high" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    <p>You're performing above average in most metrics. Your confidence level is 13% higher than the average user with similar experience.</p>
+                </div>
+
+                <div id="goals" class="tab-content">
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <div class="progress-title">Goal: Reach 85% Confidence</div>
+                            <div class="progress-value">78% / 85%</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill medium" style="width: 92%"></div>
+                        </div>
+                    </div>
+                    <p>You're making great progress toward your goal! At your current rate of improvement, you should reach your target within 2-3 more practice sessions.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+            <a href="/dashboard" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+            <button class="btn btn-success" onclick="startNewSession()">
+                <i class="fas fa-redo"></i>
+                Start New Session
+            </button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div>&copy; 2023 Interview Practice Dashboard. All rights reserved.</div>
+            <div>Powered by Advanced Voice Recognition Technology</div>
+        </div>
+    </footer>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Share Your Results</h3>
+                <button class="modal-close" onclick="closeShareModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Share your confidence analysis with others:</p>
+                <div class="share-options">
+                    <div class="share-option email" onclick="shareVia('email')">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="share-option linkedin" onclick="shareVia('linkedin')">
+                        <i class="fab fa-linkedin-in"></i>
+                    </div>
+                    <div class="share-option twitter" onclick="shareVia('twitter')">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    <div class="share-option link" onclick="copyLink()">
+                        <i class="fas fa-link"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeShareModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Remove active class from all tabs and tab contents
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to the selected tab and content
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Modal functionality
+        function openShareModal() {
+            document.getElementById('shareModal').classList.add('active');
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.remove('active');
+        }
+
+        // Share functionality
+        function shareVia(platform) {
+            // In a real implementation, this would open the appropriate share dialog
+            alert(`Sharing via ${platform}...`);
+            closeShareModal();
+        }
+
+        function copyLink() {
+            // In a real implementation, this would copy the link to clipboard
+            alert('Link copied to clipboard!');
+            closeShareModal();
+        }
+
+        // Download report functionality
+        function downloadReport() {
+            // In a real implementation, this would generate and download a PDF report
+            alert('Downloading your confidence report...');
+        }
+
+        // Start new session
+        function startNewSession() {
+            window.location.href = '/dashboard';
+        }
+
+        // Animate progress bars on page load
+        window.addEventListener('load', () => {
+            const progressFills = document.querySelectorAll('.progress-fill');
+            
+            setTimeout(() => {
+                progressFills.forEach(fill => {
+                    const width = fill.style.width;
+                    fill.style.width = '0';
+                    
+                    setTimeout(() => {
+                        fill.style.width = width;
+                    }, 100);
+                });
+            }, 300);
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (event) => {
+            const modal = document.getElementById('shareModal');
+            if (event.target === modal) {
+                closeShareModal();
+            }
+        });
+    </script>
+</body>
+</html>

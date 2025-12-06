@@ -1,0 +1,100 @@
+/* General Container Styles */
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Styling */
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Input Field Styling */
+input[type="text"], input[type="password"], input[type="email"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="number"]:focus {
+    border-color: #4CAF50;
+}
+
+/* Form Styling */
+form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Title */
+h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Flash message styles */
+.flash {
+    padding: 10px;
+    margin: 20px 0;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.flash.success {
+    background-color: #4CAF50;
+}
+
+.flash.danger {
+    background-color: #f44336;
+}
+
+.flash.info {
+    background-color: #2196F3;
+}
+
+/* Video Display */
+#video-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#video-container video {
+    width: 100%;
+    max-width: 600px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+/* Feedback Section */
+#feedback-graph {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#feedback-graph img {
+    max-width: 100%;
+    height: auto;
+}
